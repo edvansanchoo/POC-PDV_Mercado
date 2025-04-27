@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/mssql/server:2022-latest
 
+USER root
+
 # Criar diretório para scripts de inicialização
 RUN mkdir -p /docker-entrypoint-initdb.d
 
@@ -18,6 +20,8 @@ ENV MSSQL_PID=Express
 
 # Expor porta
 EXPOSE 1433
+
+USER mssql
 
 # Iniciar SQL Server com script personalizado
 CMD /bin/bash /entrypoint.sh
