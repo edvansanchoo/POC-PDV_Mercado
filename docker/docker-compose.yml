@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: Dockerfile
+    container_name: pdv-frontend
+    ports:
+      - "${FRONTEND_PORT}:80"
+    volumes:
+      - ../frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=${ASPNETCORE_ENVIRONMENT}
+    depends_on:
+      - backend
+    networks:
+      - pdv-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile
+    container_name: pdv-backend
+    ports:
+      - "${BACKEND_PORT}:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+      - ConnectionStrings__DefaultConnection=Server=db;Database=PDVMercado;User=sa;Password=${SQL_PASSWORD};TrustServerCertificate=True
+      - JWT__Secret=${JWT_SECRET}
+      - JWT__Issuer=PDVMercado
+      - JWT__Audience=PDVMercadoUsers
+      - JWT__DurationInMinutes=60
+    depends_on:
+      - db
+    networks:
+      - pdv-network
+    restart: unless-stopped
+
+  db:
+    build:
+      context: ../database
+      dockerfile: Dockerfile
+    container_name: pdv-database
+    environment:
+      - ACCEPT_EULA=${ACCEPT_EULA}
+      - SA_PASSWORD=${SQL_PASSWORD}
+      - MSSQL_PID=Express
+    ports:
+      - "${DATABASE_PORT}:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+      - ../database/scripts:/docker-entrypoint-initdb.d
+    networks:
+      - pdv-network
+    restart: unless-stopped
+
+networks:
+  pdv-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+    driver: local

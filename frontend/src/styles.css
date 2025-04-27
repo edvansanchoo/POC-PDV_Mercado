@@ -1,0 +1,15 @@
+/* Importar Bootstrap */
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+/* Estilos globais */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}

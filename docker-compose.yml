@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=${NODE_ENV:-development}
+    container_name: pdv-frontend
+    ports:
+      - "${FRONTEND_PORT:-4200}:80"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+    depends_on:
+      - backend
+    networks:
+      - pdv-network
+    restart: unless-stopped
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+    container_name: pdv-backend
+    ports:
+      - "${BACKEND_PORT:-5000}:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
+      - ConnectionStrings__DefaultConnection=Server=db;Database=PDVMercado;User=sa;Password=${SQL_PASSWORD:-StrongP@ssw0rd};TrustServerCertificate=True
+      - JWT__Secret=${JWT_SECRET:-pdv_mercado_secret_key_for_development_environment_2025}
+      - JWT__Issuer=PDVMercado
+      - JWT__Audience=PDVMercadoUsers
+      - JWT__DurationInMinutes=60
+    depends_on:
+      - db
+    networks:
+      - pdv-network
+    restart: unless-stopped
+
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    container_name: pdv-database
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=${SQL_PASSWORD:-StrongP@ssw0rd}
+      - MSSQL_PID=Express
+    ports:
+      - "${DATABASE_PORT:-1433}:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+      - ./database/scripts:/docker-entrypoint-initdb.d
+    networks:
+      - pdv-network
+    restart: unless-stopped
+
+networks:
+  pdv-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+    driver: local

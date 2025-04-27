@@ -1,0 +1,38 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h1 class="text-center">{{ title }}</h1>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <h4>Status da Configuração</h4>
+            <p><strong>Frontend:</strong> Funcionando</p>
+            <p><strong>Backend:</strong> {{ apiStatus }}</p>
+            <p><strong>Ambiente:</strong> {{ apiEnvironment }}</p>
+            <p><strong>Timestamp:</strong> {{ apiTimestamp }}</p>
+          </div>
+          
+          <div class="mt-4">
+            <h4>Fase 0: Configuração do Ambiente</h4>
+            <p>Esta é a configuração inicial do projeto PDV Mercado, com os seguintes componentes:</p>
+            <ul>
+              <li>Frontend Angular</li>
+              <li>Backend .NET 8</li>
+              <li>Banco de dados SQL Server</li>
+              <li>Docker e Docker Compose</li>
+            </ul>
+          </div>
+          
+          <div class="mt-4">
+            <button class="btn btn-primary" (click)="checkApiStatus()">Verificar Status da API</button>
+          </div>
+        </div>
+        <div class="card-footer text-center">
+          <p>PDV Mercado - POC</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
