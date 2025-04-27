@@ -1,0 +1,52 @@
+# .NET Core
+bin/
+obj/
+*.user
+*.userosscache
+*.suo
+*.dll
+*.exe
+*.pdb
+*.cache
+*.vs/
+.vscode/
+.idea/
+*.userprefs
+project.lock.json
+project.fragment.lock.json
+artifacts/
+**/Properties/launchSettings.json
+
+# Angular
+/frontend/dist
+/frontend/tmp
+/frontend/out-tsc
+/frontend/bazel-out
+/frontend/node_modules
+/frontend/.angular/cache
+/frontend/.sass-cache
+/frontend/connect.lock
+/frontend/coverage
+/frontend/libpeerconnection.log
+/frontend/npm-debug.log
+/frontend/yarn-error.log
+/frontend/.pnpm-debug.log
+/frontend/testem.log
+/frontend/typings
+/frontend/.angular
+
+# Docker
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# SQL Server
+*.mdf
+*.ldf
+*.ndf
+
+# Misc
+.DS_Store
+Thumbs.db
